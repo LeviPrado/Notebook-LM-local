@@ -56,17 +56,27 @@ def extrair_texto(pdf_path: Path) -> Dict[str, Any]:
     }
 
 if __name__ == "__main__":
-    # Aponta para um PDF de teste na pasta data/
+    # Aponta para a pasta Arquivos de Dados
     caminho_teste = Path(__file__).parent.parent / "Arquivos de Dados"
 
-    # Pega o primeiro PDF que encontrar na pasta para testar
+    # Pega todos os PDFs
     pdfs_encontrados = list(caminho_teste.glob("*.pdf"))
 
     if pdfs_encontrados:
-        resultado = extrair_texto(pdfs_encontrados[0])
-        print("✔ Teste concluído com sucesso!")
-        print(f"Arquivo: {resultado['nome_arquivo']}")
-        print(f"Total de páginas: {resultado['total_paginas']}")
-        print(f"Tamanho do texto extraído: {len(resultado['texto_completo'])} caracteres")
+        print(f"Encontrados {len(pdfs_encontrados)} PDFs. Analisando extração de todos:\n")
+        
+        for pdf_path in pdfs_encontrados:
+            try:
+                resultado = extrair_texto(pdf_path)
+                tamanho = len(resultado['texto_completo'])
+                
+                # Se o tamanho for 0, colocamos um alerta visual
+                if tamanho == 0:
+                    print(f" {resultado['nome_arquivo']}: {resultado['total_paginas']} páginas | {tamanho} caracteres")
+                else:
+                    print(f" {resultado['nome_arquivo']}: {resultado['total_paginas']} páginas | {tamanho} caracteres")
+            except Exception as e:
+                print(f"✖ Erro ao processar {pdf_path.name}: {e}")
+                
     else:
         print("Nenhum PDF encontrado na pasta para testar.")
