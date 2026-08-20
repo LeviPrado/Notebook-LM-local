@@ -55,28 +55,42 @@ def extrair_texto(pdf_path: Path) -> Dict[str, Any]:
         "paginas": paginas
     }
 
+def extrair_todos_pdfs(diretorio_origem: Path, diretorio_destino: Path) -> Dict[str, Any]:
+
+    diretorio_origem = Path(diretorio_origem)
+    diretorio_destino = Path(diretorio_destino)
+
+    if not diretorio_origem.exists():
+        raise FileNotFoundError(f"Diretório de origim não encontrado: {diretorio_origem}")
+
+    diretorio_destino.mkdir(parents=True, exist_ok=True)
+
+    resultados = {}
+    arquivos_pdf = sorted(list(diretorio_origem.glob("*.pdf")))
+
+    for pdf_path in arquivos_pdf:
+        try:
+            dados_extraidos = extrair_texto(pdf_path)
+            resultados[pdf_path.name] = dados_extraidos
+            tamanho = len(dados_extraidos['texto_completo'])
+
+            if tamanho == 0:
+                print(f"{pdf_path.name}: 0 caracteres extraídos")
+            else:
+                print(f"{pdf_path.name} processado")
+        except Exception as e:
+            print(f"Falha ao processar '{pdf_path.name}': {e}")
+
+    caminho_json = diretorio_destino / "dados_extraidos.json"
+    with open(caminho_json, 'w', encoding='utf-8') as f:
+        json.dump(resultados, f, ensure_ascii=False, indent=4)
+
+    return resultados
+
 if __name__ == "__main__":
-    # Aponta para a pasta Arquivos de Dados
-    caminho_teste = Path(__file__).parent.parent / "Arquivos de Dados"
 
-    # Pega todos os PDFs
-    pdfs_encontrados = list(caminho_teste.glob("*.pdf"))
+    pasta_base = Path(__file__).parent.parent
+    pasta_dados = pasta_base / "Arquivos de Dados"
+    pasta_destino = pasta_base / "extracted data"
 
-    if pdfs_encontrados:
-        print(f"Encontrados {len(pdfs_encontrados)} PDFs. Analisando extração de todos:\n")
-        
-        for pdf_path in pdfs_encontrados:
-            try:
-                resultado = extrair_texto(pdf_path)
-                tamanho = len(resultado['texto_completo'])
-                
-                # Se o tamanho for 0, colocamos um alerta visual
-                if tamanho == 0:
-                    print(f" {resultado['nome_arquivo']}: {resultado['total_paginas']} páginas | {tamanho} caracteres")
-                else:
-                    print(f" {resultado['nome_arquivo']}: {resultado['total_paginas']} páginas | {tamanho} caracteres")
-            except Exception as e:
-                print(f"✖ Erro ao processar {pdf_path.name}: {e}")
-                
-    else:
-        print("Nenhum PDF encontrado na pasta para testar.")
+    dados_finais = extrair_todos_pdfs(pasta_dados, pasta_destino)
