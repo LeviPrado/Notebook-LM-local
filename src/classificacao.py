@@ -12,21 +12,29 @@ def extracao_metadados_categoria(texto: str) -> Dict[str, Any]:
         "PORTARIA" : r"\bPORTARIA\b",
         "LEI" : r"\bLEI\b",
         "DECRETO" : r"\bDECRETO\b",
-        "INSTRUCAO_NORMATIVA" : r"\bINSTRUÇ[AÃ]O NORMATIVA\b"
+        "INSTRUCAO_NORMATIVA" : r"\bINSTRUÇ?[AÃ]O NORMATIVA\b"
     }
 
     categorias = "OUTROS"
+    match_categoria = None
 
     for cat, regex in pdr_categorias.items():
-        if re.search(regex, cabecalho):
+        m = re.search(regex, cabecalho)
+        if m:
             categorias = cat
+            match_categoria = m
             break
 
+    if match_categoria:
+        janela = cabecalho[match_categoria.end():match_categoria.end() + 150]
+    else:
+        janela = cabecalho
 
-    numero_encontrado = re.search(r'N[º°\.\s]*([\d\.]+)', cabecalho)
+
+    numero_encontrado = re.search(r'N[º°\.\s]*?(\d[\d\.]+)', janela)
     numero = numero_encontrado.group(1) if numero_encontrado else None
 
-    ano_encontrado = re.search(r'\b(19|20)\d{2}\b', cabecalho)
+    ano_encontrado = re.search(r'\b(19|20)\d{2}\b', janela)
     ano = ano_encontrado.group(0) if ano_encontrado else None
 
     orgaos = ["CFM", "MEC", "MS", "ANVISA", "STF", "STJ", "GOVERNO"]
