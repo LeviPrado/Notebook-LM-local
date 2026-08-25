@@ -1,11 +1,17 @@
 import chromadb
 from pathlib import Path
 from typing import List, Dict, Any, Optional
+from chromadb.utils import embedding_functions
+
+ef_multilingual = embedding_functions.SentenceTransformerEmbeddingFunction(
+    model_name="paraphrase-multilingual-MiniLM-L12-v2",
+    device="cpu"
+)
 
 def buscar_normas(
         perguntas: str,
         pasta_chroma: Path,
-        n_results: int = 3,
+        n_results: int = 10,
         categotia_filtro: Optional[str] = None
 ) ->List[Dict[str, Any]]:
 
@@ -13,7 +19,7 @@ def buscar_normas(
         raise FileNotFoundError(f"O banco vetorial não está em {pasta_chroma}")
 
     cliente = chromadb.PersistentClient(path=str(pasta_chroma))
-    colecao = cliente.get_collection(name="normas_juridicas")
+    colecao = cliente.get_collection(name="normas_juridicas", embedding_function=ef_multilingual)
 
     wh_clause = None
 
