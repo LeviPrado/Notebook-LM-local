@@ -2,8 +2,9 @@ import json
 from pathlib import Path
 from typing import List, Dict, Any
 import chromadb
+from chromadb.utils import embedding_functions
 
-def criar_chunks_com_overlap(texto: str, chunk_size: int = 800, overlap: int = 150) -> List[str]:
+def criar_chunks_com_overlap(texto: str, chunk_size: int = 1200, overlap: int = 300) -> List[str]:
 
     if not texto:
         return []
@@ -14,12 +15,27 @@ def criar_chunks_com_overlap(texto: str, chunk_size: int = 800, overlap: int = 1
 
     while inicio < tamanho_texto:
         fim = inicio + chunk_size
-        chunk = texto[inicio:fim]
-        chunks.append(chunk)
 
-        inicio += (chunk_size - overlap)
+        if fim < tamanho_texto:
+            ultimo_espaco = texto.rfind(' ', inicio, fim)
+            ultima_quebra = texto.rfind('\n', inicio, fim)
+
+            ponto_corte = max(ultimo_espaco, ultima_quebra)
+            if ponto_corte != -1 and ponto_corte > inicio:
+                fim = ponto_corte
+
+        chunk = texto[inicio:fim].strip()
+        if chunk:
+            chunks.append(chunk)
+
+        inicio = fim - overlap
 
     return chunks
+
+ef_multilingual = embedding_functions.SentenceTransformerEmbeddingFunction(
+    model_name="paraphrase-multilingual-MiniLM-L12-v2",
+    device="cpu"
+)
 
 def indexar_base_com_classificacao(caminho_json: Path, pasta_chromadb: Path) -> None:
     caminho_json = Path(caminho_json)
@@ -33,7 +49,7 @@ def indexar_base_com_classificacao(caminho_json: Path, pasta_chromadb: Path) -> 
 
     cliente = chromadb.PersistentClient(path=str(pasta_chromadb))
 
-    colecao = cliente.get_or_create_collection(name="normas_juridicas")
+    colecao = cliente.get_or_create_collection(name="normas_juridicas", embedding_function=ef_multilingual)
 
     total_indexado = 0
 
@@ -65,11 +81,12 @@ def indexar_base_com_classificacao(caminho_json: Path, pasta_chromadb: Path) -> 
                 "chunk_index": idx
             })
 
-        colecao.add(
+        colecao.upsert(
             ids=ids,
             documents=documentos,
             metadatas=metadados
         )
+
         total_indexado += len(documentos)
         print(f"{nome_arquivo}: {len(documentos)} chunks indexados")
 
