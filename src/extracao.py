@@ -2,7 +2,11 @@ import re
 from typing import Dict, Any
 from pathlib import Path
 import pymupdf as fitz
+from PIL import Image
+import pytesseract 
 import json
+
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 def limpa_texto(texto: str) -> str:
     if not texto:
@@ -32,9 +36,15 @@ def extrair_texto(pdf_path: Path) -> Dict[str, Any]:
         metadado = documentos.metadata or {}
 
         for num_pagina, pagina in enumerate(documentos, start=1):
-            texto_bruto = pagina.get_text()
-            texto_limpo = limpa_texto(texto_bruto)
+            texto_bruto = pagina.get_text().strip()
 
+            if len(texto_bruto) < 50:
+                pix = pagina.get_pixmap(dpi=300)
+                img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+
+                texto_bruto = pytesseract.image_to_string(img, lang='por')
+
+            texto_limpo = limpa_texto(texto_bruto)
 
             paginas.append({
                 "numero_pagina": num_pagina,
