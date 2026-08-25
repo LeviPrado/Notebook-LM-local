@@ -31,7 +31,7 @@ def extracao_metadados_categoria(texto: str) -> Dict[str, Any]:
         janela = cabecalho
 
 
-    numero_encontrado = re.search(r'N[º°\.\s]*?(\d[\d\.]+)', janela)
+    numero_encontrado = re.search(r'N?[º°\.\s]*?(\d[\d\.]+)', janela)
     numero = numero_encontrado.group(1) if numero_encontrado else None
 
     ano_encontrado = re.search(r'\b(19|20)\d{2}\b', janela)
