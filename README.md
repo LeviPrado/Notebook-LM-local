@@ -61,7 +61,7 @@ Conforme os requisitos do projeto, a aplicação roda **100% localmente via CPU*
 Clone este repositório e instale os pacotes requeridos:
 ```bash
 git clone [https://github.com/LeviPrado/Notebook-LM-local.git]
-cd SEU-REPOSITORIO
+cd Notebook-LM-local
 
 pip install -r requirements.txt
 ```
