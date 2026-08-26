@@ -60,7 +60,7 @@ Conforme os requisitos do projeto, a aplicação roda **100% localmente via CPU*
 ### 2. Instalação de Dependências
 Clone este repositório e instale os pacotes requeridos:
 ```bash
-git clone [https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git](https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git)
+git clone [https://github.com/LeviPrado/Notebook-LM-local.git]
 cd SEU-REPOSITORIO
 
 pip install -r requirements.txt
