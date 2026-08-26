@@ -18,12 +18,12 @@ Conforme os requisitos do projeto, a aplicação roda **100% localmente via CPU*
 
 ```text
 .
-├── Arquivos de Dados/           Pasta para armazenar os PDFs de entrada
-├── extracted data/              Dados processados e banco vetorial (gerado automaticamente)
+├── 📂Arquivos de Dados/           Pasta para armazenar os PDFs de entrada
+├── 📂extracted data/              Dados processados e banco vetorial (gerado automaticamente)
 │   ├── dados_extraidos.json
 │   ├── dados_classificados.json
 │   └── chroma_db/
-├── src/
+├── 📂src/
     ├── extracao.py                  Módulo de leitura de PDF e OCR
     ├── classificacao.py             Módulo de classificação e extração de metadados
     ├── indexer.py                   Módulo de chunking e indexação no ChromaDB
@@ -34,6 +34,7 @@ Conforme os requisitos do projeto, a aplicação roda **100% localmente via CPU*
 ├── LICENSE
 ├── requirements.txt             Dependências do projeto
 └── README.md                    Documentação do repositório
+```
 
 ## 🛠️ Tecnologias Utilizadas
 
