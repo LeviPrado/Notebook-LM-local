@@ -7,9 +7,13 @@ Conforme os requisitos do projeto, a aplicação roda **100% localmente via CPU*
 ##  Objetivos Implementados
 
 * **Extração e OCR de PDFs:** Extração nativa via `PyMuPDF` com fallback automático para `PyTesseract` (OCR) no processamento de documentos escaneados ou imagens.
+
 * **Classificação e Metadados:** Identificação automatizada da categoria documental (Lei, Decreto, Portaria, Resolução, Instrução Normativa) e extração de número, ano e órgão emissor via expressões regulares.
+  
 * **Busca Semântica:** Fatiamento (*chunking*) estruturado com overlap e indexação no banco vetorial `ChromaDB` utilizando o modelo `paraphrase-multilingual-MiniLM-L12-v2`.
+  
 * **LLM Local Factual:** Integração com o modelo `llama3.2:1b` via `Ollama`, configurado com parâmetros de temperatura nula e regras estritas para evitar alucinações.
+
 * **Interface Gráfica Minimalista:** Interface web em `Streamlit` inspirada no Google Gemini, com suporte a inspeção de fontes e trechos consultados.
 
 ---
