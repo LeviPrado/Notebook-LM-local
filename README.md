@@ -62,4 +62,27 @@ Clone este repositório e instale os pacotes requeridos:
 ```bash
 git clone [https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git](https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git)
 cd SEU-REPOSITORIO
+
 pip install -r requirements.txt
+```
+
+### 3. Pipeline de Dados
+Adicione os arquivos PDF na pasta Arquivos de Dados/ e execute a sequência de processamento:
+
+Extração de Texto e OCR:
+```bash
+python extracao.py
+```
+Classificação e Metadados:
+```bash
+python classificacao.py
+```
+Indexação no Banco Vetorial:
+```bash
+python indexer.py
+```
+Execução da Aplicação
+    Interface Web (Streamlit):
+    ```bash
+    streamlit run interface.py
+    ```
