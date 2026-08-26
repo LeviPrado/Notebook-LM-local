@@ -24,12 +24,12 @@ Conforme os requisitos do projeto, a aplicação roda **100% localmente via CPU*
 │   ├── dados_classificados.json
 │   └── chroma_db/
 ├── 📂src/
-    ├── extracao.py                  Módulo de leitura de PDF e OCR
-    ├── classificacao.py             Módulo de classificação e extração de metadados
-    ├── indexer.py                   Módulo de chunking e indexação no ChromaDB
-    ├── busca.py                     Módulo de busca por similaridade vetorial
-    ├── Rag_chatbot.py               Interface de chat via terminal (CLI)
-    └── interface.py                 Interface gráfica web (Streamlit)
+    ├── 📄extracao.py                  Módulo de leitura de PDF e OCR
+    ├── 📄classificacao.py             Módulo de classificação e extração de metadados
+    ├── 📄indexer.py                   Módulo de chunking e indexação no ChromaDB
+    ├── 📄busca.py                     Módulo de busca por similaridade vetorial
+    ├── 📄Rag_chatbot.py               Interface de chat via terminal (CLI)
+    └── 📄interface.py                 Interface gráfica web (Streamlit)
 ├── .gitignore
 ├── LICENSE
 ├── requirements.txt             Dependências do projeto
