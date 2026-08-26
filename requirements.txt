@@ -1,0 +1,7 @@
+PyMuPDF
+pytesseract
+Pillow
+chromadb
+sentence-transformers
+requests
+streamlit
