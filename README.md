@@ -56,3 +56,10 @@ Conforme os requisitos do projeto, a aplicação roda **100% localmente via CPU*
 4. Baixar o modelo executando no terminal:
    ```bash
    ollama run llama3.2:1b
+
+### 2. Instalação de Dependências
+Clone este repositório e instale os pacotes requeridos:
+```bash
+git clone [https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git](https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git)
+cd SEU-REPOSITORIO
+pip install -r requirements.txt
